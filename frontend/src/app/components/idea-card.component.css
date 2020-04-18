@@ -1,0 +1,99 @@
+.img-responsive {
+  width: 50px;
+}
+
+.ib-card {
+  display: inline-block;
+/*  width: 230px;
+  height: 170px;*/
+  position: relative;
+  font-family: "Caveat", cursive;
+  padding: 14px;
+  z-index: 5;
+  transition: transform .5s, z-index .2s .1s;
+}
+
+svg {
+  height: 170px;
+  width: 240px;
+}
+
+.ib-card .ib-card-content {
+  margin: 20px;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 15px;
+  left: 15px;
+}
+
+[pin] {
+  position: relative;
+  left: 150%;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  background-color: purple;
+  border-radius: 50%;
+  left: 0;
+}
+
+.pin-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+.editing {
+  transform: scale(1.5);
+  z-index: 100;
+  transition: transform .5s;
+}
+
+.editing [pin] {
+  left: 50px;
+}
+
+#push-pin {
+  width: 75px;
+  height: 50px;
+  left: 48%;
+  top: -15px;
+  z-index: 300;
+  position: absolute;
+  background: url('../../assets/pin-sprites.png') left center;
+
+  background-repeat: no-repeat;
+  background-size: 300px;
+  transform: translateX(-25px);
+  transition: background-position 0.2s steps(3, start), transform 0.2s ease-out;
+  background-position: -225px;
+}
+
+.ib-card {
+  outline: none;
+}
+/*.ib-card:focus #push-pin {
+  filter:
+    saturate(240%)
+    hue-rotate(140deg)
+    brightness(95%)
+    contrast(80%)
+    ;
+}*/
+
+#push-pin.edit {
+  transform: translateX(0px);
+  background-position: 0;
+  /*animation: play 5s steps(3);
+  animation-fill-mode: forwards;*/
+  /*animation-direction: reverse;*/
+}
+
+.ib-card.editing .card-outline {
+  stroke: red;
+  color: red;
+  fill: red;
+  width: 300px;
+}

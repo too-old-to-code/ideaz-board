@@ -1,0 +1,68 @@
+<div>
+  <div class="main-cover">
+    <div class="panel">
+      <div class="panel-form">
+        <div class="title-input-group">
+          <label for="board-title">Board Title:</label>
+          <input type="text" id="board-title" #boardTitle/>
+        </div>
+      </div>
+      <div class="panel-image">
+        <div class="name-ideas">
+          <div class="panel-overlay">
+            <span
+              class="name-idea name-idea__invisible"
+              [ngClass]="{'active': sectionName.selected}"
+              *ngFor="let sectionName of sectionNameIdeas"
+              (click)="handleSelectSectionClick(sectionName)"
+            >
+              {{ sectionName.text }}
+            </span>
+          </div>
+          <span
+            class="name-idea"
+            [ngClass]="{'active': sectionName.selected}"
+            *ngFor="let sectionName of sectionNameIdeas"
+            (click)="handleSelectSectionClick(sectionName)"
+          >
+            {{ sectionName.text }}
+          </span>
+        </div>
+        <div
+          class="settings"
+          [ngClass]="{'visible': settingsActive }"
+        >
+          <app-pincode
+            *ngIf="settingsActive"
+            [pincodeLength]="4"
+            (pincodeEntered)="handlePincodeEntry($event)"
+          >
+            <span style="margin-right: 10px">Secure board with pincode:</span>
+          </app-pincode>
+         <!--  <label>
+            Reduced privilege for invitees:
+            <input type="checkbox">
+          </label> -->
+        </div>
+      </div>
+
+      <div class="panel-form">
+        <div>
+          <button (click)="handleCreateBoardClick(boardTitle.value)">
+            <fa-icon
+              class="icon icon-lock"
+              *ngIf="accessPin"
+              [icon]="lockIcon"
+            ></fa-icon>
+            Create New Idea Board
+          </button>
+          <button (click)="toggleSettingsPanel()">
+            <fa-icon
+              [icon]="cogIcon"
+            ></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

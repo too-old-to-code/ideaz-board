@@ -1,0 +1,102 @@
+<div
+  class="overlay"
+  [ngClass]="{ 'visible': isAddingSection }"
+></div>
+<div class="nav-container">
+  <app-navbar
+    [accessState]="accessState"
+    [boardTitle]="boardTitle"
+    [viewStyle]="view"
+    (addSection)="addSection()"
+    (exportAsPdf)="exportAsPdf(boardTitle)"
+    (addToClipboard)="addToClipboard()"
+    (changeView)="changeView()"
+    (sendPin)="sendPin($event)"
+  ></app-navbar>
+</div>
+<div class="main-container">
+
+  <!-- CARD USED AS INPUT FOR CREATING SECTIONS :STARTS: -->
+  <app-idea-card
+    [ngClass]="{'blank-card': true, 'blank-card__visible': isAddingSection}"
+    backgroundColor="white"
+    fontSize="1.2em"
+  >
+    <span *ngIf="isAddingSection">
+    <textarea
+      #section
+      maxLength="50"
+      activeFocus
+      (keyup.enter)="createSection(section)"
+    ></textarea>
+    <fa-icon
+      (click)="createSection(section)"
+      [icon]="plusIcon"
+      class="discrete bottom-left-corner"
+    ></fa-icon>
+  </span>
+  </app-idea-card>
+  <!-- CARD USED AS INPUT FOR CREATING SECTIONS :ENDS: -->
+
+  <div class="main-cover">
+
+    <app-idea-section *ngFor="let section of sections$ | async; index as i; trackBy: trackById">
+
+      <!-- CARD USED AS SECTION HEADING :STARTS: -->
+      <app-idea-card
+        class="title"
+        backgroundColor="white"
+        fontSize="1.2em"
+      >
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+          {{section.title}}
+        </div>
+        <fa-icon
+          (click)="createCard(section)"
+          [icon]="plusIcon"
+          class="discrete bottom-left-corner"
+        ></fa-icon>
+        <fa-icon
+          (click)="deleteSection(section, $event)"
+          [icon]="trashIcon"
+          class="discrete bottom-right-corner"
+        ></fa-icon>
+      </app-idea-card>
+      <!-- CARD USED AS SECTION HEADING :ENDS: -->
+
+      <!-- CARD DISPLAYED IN SECTIONS :STARTS: -->
+      <app-idea-card
+        *ngFor="let card of section.cards; trackBy: trackById"
+        [backgroundColor]="getColorForSection(i)"
+        [editing]="isEditing(card.id)"
+        [withPin]="true"
+        (click)="saveCard($event, card, section)"
+      >
+        <span *ngIf="isEditing(card.id); else cardText">
+          <textarea
+            activeFocus
+            (change)="changeTextOnCurrentCard($event, card)"
+            (keydown.enter)="changeAndSaveCard($event, card, section)"
+          >{{card.text}}</textarea>
+          <fa-icon
+            (click)="deleteCard($event, card, section)"
+            [icon]="trashIcon"
+            class="discrete bottom-right-corner"
+          ></fa-icon>
+        </span>
+        <ng-template #cardText>
+          <p class="card-text">{{card.text}}</p>
+          <span class="discrete bottom-left-corner">
+            <fa-icon
+              (click)="updateVotes(card, section)"
+              [icon]="thumbsUp"
+            ></fa-icon>{{card.likedBy?.length || 0}}
+          </span>
+          <span class="discrete bottom-right-corner">- {{card.author}}</span>
+        </ng-template>
+      </app-idea-card>
+      <!-- CARD DISPLAYED IN SECTIONS :ENDS: -->
+
+    </app-idea-section>
+  </div>
+</div>

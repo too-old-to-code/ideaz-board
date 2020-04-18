@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  color: #464341;
+}
+
+:root {
+  --navbar-height: 65px;
+}
+
+input, button {
+  padding: 7px;
+}

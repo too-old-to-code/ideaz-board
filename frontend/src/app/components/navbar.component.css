@@ -1,0 +1,108 @@
+nav {
+  height: 100%;
+  letter-spacing: 2px;
+  box-shadow: 0px 10px 20px black;
+  font-size: 1rem;
+  font-family: "Caveat", cursive;
+  color: blue;
+  user-select: none;
+  background: rgb(59,59,59);
+  background: linear-gradient(
+    0deg, rgba(59,59,59, 1) 7%,
+    rgba(137,142,143, 1) 20%,
+    rgba(245,249,250, 1) 44%,
+    rgba(228,236,237, 1) 72%,
+    rgba(143,147,148, 1) 98%
+  );
+}
+
+.navbar-content, .access-pin {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.single-digit {
+  width: 20px;
+  margin: 0 1px;
+  text-align: center;
+}
+
+.access-pin {
+  justify-content: center;
+}
+
+.routes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.nav-item, .nav-title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+.nav-link {
+  text-decoration: none !important;
+  color: inherit;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.nav-item:before, .nav-item:after, .nav-title:before {
+  content: '';
+  z-index: -1;
+  height: 30px;
+  width: 80%;
+  display: block;
+  position: absolute;
+  background: rgba(255,255,200,.6);
+  box-shadow: 0 1px 3px rgba(0,0,0, .4);
+}
+
+.nav-title {
+  color: #464341;
+}
+
+.nav-title:before {
+  transform: rotateZ(-1deg);
+}
+
+.nav-item:after {
+  transform: rotateZ(-9deg);
+  bottom: 20%;
+}
+
+.nav-item:before {
+  transform: rotateZ(-8deg);
+  top: 20%;
+}
+
+.nav-link {
+  padding: 0 20px;
+}
+
+.nav-user {
+  padding: 0 35px;
+}
+
+.route-active {
+  background-color: #bada55;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}

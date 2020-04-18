@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./backend/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    ports:
+      - 27017:27017
+  client:
+    environment:
+      SERVER_PATH: localhost:4000/graphql
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4200:4200
+    depends_on:
+      - server
+    volumes:
+      - /usr/app/node_modules
+      - ./frontend:/usr/app
+  server:
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      DB_URL: ${DB_URL}
+    build: ./backend
+    depends_on:
+      - mongodb
+    volumes:
+      - /usr/app/node_modules
+      - ./backend:/usr/app
+    ports:
+      - 3000:3000
+      - 4000:4000

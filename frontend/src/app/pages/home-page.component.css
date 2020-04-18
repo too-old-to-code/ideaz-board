@@ -1,0 +1,136 @@
+.main-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  width: 500px;
+  height: 450px;
+  /*box-shadow: 2px 2px 5px grey;*/
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #eae6e6;
+  overflow: hidden;
+}
+
+.panel-image {
+  position: relative;
+  flex: 2;
+  background-image: url('../../assets/cork_adjusted_2.jpg');
+  border-bottom: 2px solid #4f4e4e;
+  border-top: 2px solid #4f4e4e;
+}
+
+.panel-overlay {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  background: black;
+  opacity: .3;
+  z-index:100;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.panel-form {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eae6e6;
+  z-index: 101;
+}
+
+.name-ideas {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.name-idea {
+  background: white;
+  display: inline-block;
+  padding: 10px 4px;
+  margin: 20px;
+  color: grey;
+  user-select: none;
+
+}
+
+.name-idea.active {
+  box-shadow: 0 1px 6px black;
+  color: black;
+}
+
+.name-idea__invisible {
+  user-select: none;
+  background-color: aliceblue;
+  color: transparent;
+  padding: 20px;
+  border-radius: 50%;
+  margin: 10px 4px;
+  background: transparent;
+}
+
+.name-idea__invisible.active {
+  background: aliceblue;
+  box-shadow: 0 0 10px aliceblue;
+}
+
+.title-input-group {
+  margin: 5px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+#board-title {
+  flex: 1;
+  margin-left: 3px;
+}
+
+.settings {
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  transition: transform .3s;
+  transform: translateY(-110%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.settings.visible {
+  transform: none;
+}
+
+.icon-lock {
+  color: #6c692f;
+  margin-right: 3px;
+}
+
+@media only screen and (max-width: 500px) {
+  .panel {
+    height: 100%;
+    width: 100%;
+  }
+}

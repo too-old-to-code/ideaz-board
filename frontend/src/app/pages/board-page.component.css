@@ -1,0 +1,132 @@
+.main-cover {
+  /*background-image: url(https://i.pinimg.com/originals/dd/e4/93/dde4933baf8dbac6e3b783c2538c0bfa.jpg);*/
+  background-image: url('../../assets/cork_adjusted_2.jpg');
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100vw;
+  min-height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+app-idea-card {
+  display: inline-block;
+  /*height: 170px;*/
+  position: relative;
+  /*z-index: 2;*/
+}
+
+app-idea-card:focus {
+  outline: none;
+}
+
+app-board-tape {
+  width: 100%;
+}
+
+app-idea-section {
+  width: 100%;
+}
+
+app-idea-section:last-child {
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+  padding: 20px 0;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
+}
+
+.blank-card {
+  position: fixed;
+  right: 0;
+  transform: translate3d(300px, 50px, 0) rotateZ(-30deg);
+  transition: transform .3s;
+  z-index: 10000;
+}
+
+.blank-card.blank-card__visible {
+  transform: none;
+}
+
+.blank-card textarea, .title {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.discrete {
+  opacity: .4;
+  font-size: 1rem;
+}
+
+.bottom-right-corner, .bottom-left-corner {
+  position: absolute;
+  bottom: 0;
+}
+
+.bottom-right-corner {
+  right: -10px;
+}
+
+.bottom-left-corner {
+  left: 0;
+}
+
+.title .discrete {
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.title:hover .discrete {
+  opacity: .4;
+}
+
+.nav-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height);
+  z-index: 60;
+}
+
+.main-container {
+  margin-top: var(--navbar-height);
+  height: calc(100vh - var(--navbar-height));
+  overflow: auto;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: black;
+  opacity: 0;
+  /*transition: opacity .2s;*/
+  visibility: hidden;
+  transition: visibility 0s linear .3s, opacity .3s;
+}
+
+.overlay.visible {
+  opacity: .5;
+  transition: visibility 0s linear 0s, opacity .3s;
+  visibility: visible;
+}
+
+.card-text {
+  max-height: 75%;
+  overflow: hidden;
+}

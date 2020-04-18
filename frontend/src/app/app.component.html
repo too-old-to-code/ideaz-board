@@ -1,0 +1,23 @@
+<div class="top-level-overlay" *ngIf="!token">
+  <div class="box box__outer">
+    <p>Please add your name and password to help distinguish your posts.</p>
+    <div class="box__inner">
+      <span>
+        <!-- <label for="initials">
+          Initials
+        </label> -->
+        <input type="text" placeholder="Username" id="username" #username>
+      </span>
+      <span>
+   <!--      <label for="email">
+          Email
+        </label> -->
+        <input type="text" placeholder="Password" id="password" #password>
+      </span>
+    </div>
+    <button (click)="addUser(username.value, password.value)">Add</button>
+  </div>
+</div>
+<div class="app-layout">
+  <router-outlet></router-outlet>
+</div>
