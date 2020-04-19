@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '@models';
+import jwtDecode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +17,11 @@ export class BrowserStorageService {
     if (this._token) return this._token;
     this._token = window.localStorage.getItem('token');
     return this._token;
+  }
+
+  get userIdentityHash () {
+    console.log(this.token)
+    return jwtDecode(this.token).id;
   }
 
   get user () {

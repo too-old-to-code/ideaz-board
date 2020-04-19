@@ -18,6 +18,10 @@ export const UpdateCard = gql`
       id: _id
       sectionId
       text
+      creator {
+        name
+        identityHash
+      }
       author
     }
   }
@@ -48,8 +52,13 @@ export const AddCard = gql`
     addCard(newCard: $newCard, boardId: $boardId) {
       id: _id
       author
+      creator {
+        name
+        identityHash
+      }
       text
       likedBy
+      sectionId
     }
   }
 `

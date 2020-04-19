@@ -39,6 +39,7 @@
     "graphql-tag": "^2.10.3",
     "jspdf": "1.4.1",
     "jspdf-autotable": "^3.3.2",
+    "jwt-decode": "^2.2.0",
     "roughjs": "^4.0.4",
     "rxjs": "~6.5.4",
     "shortid": "^2.2.15",

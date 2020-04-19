@@ -5,6 +5,10 @@ export const GetBoard = gql`
       getBoard(boardId: $boardId){
         __typename
         title
+        creator {
+          identityHash
+          name
+        }
         sections {
           __typename
           id: _id
@@ -12,6 +16,10 @@ export const GetBoard = gql`
             id: _id
             text
             author
+            creator {
+              identityHash
+              name
+            }
             likedBy
           }
           title

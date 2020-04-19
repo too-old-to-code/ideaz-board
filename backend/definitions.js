@@ -10,13 +10,19 @@ const typeDefs = gql`
     sectionDeleted(boardId: String!): Section
   }
 
+  type User {
+    identityHash: String
+    name: String
+  }
+
   type Card {
     _id: ID
     title: String
     author: String
+    creator: User
     text: String
     likedBy: [String]
-    sectionId: String
+    sectionId: ID
   }
 
   type Section {
@@ -32,6 +38,7 @@ const typeDefs = gql`
     accessPin: String
     username: String
     sections: [Section]
+    creator: User
   }
 
   input NewBoardInput {

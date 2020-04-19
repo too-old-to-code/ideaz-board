@@ -97,8 +97,8 @@ module.exports = {
       return 'success'
     },
 
-    addBoard: async (parent, { newBoard, sectionNames }, { requestorId }, info) => {
-      return createBoard(newBoard, sectionNames, requestorId);
+    addBoard: async (parent, { newBoard, sectionNames }, { requestor }, info) => {
+      return createBoard(newBoard, sectionNames, requestor);
     },
 
     addSection: async (parent, { newSection }, context)=> {
@@ -109,19 +109,22 @@ module.exports = {
       return section;
     },
 
-    addCard: async (parent, { newCard, boardId }) => {
-      const card = await createCard(newCard);
-      await addCardToSection(card, newCard.sectionId);
+    addCard: async (parent, { newCard, boardId }, ctx) => {
+      const card = await createCard(newCard, ctx.requestor);
+      console.log('+++++++++++++++++', card)
+      await addCardToSection(card);
       pubsub.publish(CARD_ADDED, { cardAdded: card, boardId });
       return card;
     },
 
-    updateCard: async (parent, { cardChanges, boardId }) => {
-      const { id, ...changes } = cardChanges;
-      // await timer();
-      console.log(cardChanges)
-      pubsub.publish(CARD_UPDATED, { cardUpdated: { ...cardChanges, _id: id } , boardId: boardId });
-      return updateCard(id, changes);
+    updateCard: async (parent, { cardChanges: card, boardId }) => {
+      let updatedCard = await updateCard(card);
+      pubsub.publish(
+        CARD_UPDATED,
+        { cardUpdated: { ...updatedCard, _id: updatedCard.id } ,
+        boardId: boardId
+      });
+      return updatedCard
     },
 
     updateSection: (parent, { sectionChanges }) => {

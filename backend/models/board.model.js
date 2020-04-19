@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const UserSchema = require('./user.schema');
 
 const BoardSchema = new mongoose.Schema({
   id: mongoose.Schema.ObjectId,
@@ -22,9 +23,7 @@ const BoardSchema = new mongoose.Schema({
   accessPinHash: {
     type: String
   },
-  creator: {
-    type: String
-  },
+  creator: UserSchema,
   authorizedUsers: {
     type: [String]
   }

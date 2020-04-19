@@ -10,7 +10,7 @@ import rough from 'roughjs/bundled/rough.esm.js';
       tabindex="0"
     >
       <div class="pin-wrapper" *ngIf="withPin">
-        <div id="push-pin" [ngClass]="{'edit': editing}" pin></div>
+        <div id="push-pin" [ngClass]="{'edit': editing, 'alt-color': !editable}" pin></div>
       </div>
       <div
         class="ib-card-content"
@@ -41,6 +41,7 @@ export class IdeaCardComponent implements OnInit {
   @Input() hachureGap: number;
   @Input() strokeWidth: number;
   @Input() dimensions: [number, number, number, number];
+  @Input() editable = false;
 
   @ViewChild('svg', { static: true }) svg;
 

@@ -73,6 +73,10 @@ export class BoardPageComponent implements OnInit, OnDestroy {
     return user.username
   }
 
+  get userIdentityHash () {
+    return this.browserStorageSvc.userIdentityHash
+  }
+
   // The idea of this setter method is to save any card as it exits edit mode.
   // i.e, when it is pinned back to the board.
   set cardBeingEdited (card: CardBeingEdited) {
@@ -110,6 +114,10 @@ export class BoardPageComponent implements OnInit, OnDestroy {
   // prevent unnecessary re-rendering of existing cards
   trackById(index, item) {
     return item.id;
+  }
+
+  userIsAuthor (identityHash) {
+    return identityHash === this.userIdentityHash;
   }
 
   getColorForSection (num: number) {
@@ -194,6 +202,8 @@ export class BoardPageComponent implements OnInit, OnDestroy {
 
   saveCard (evt, card, section) {
     if (this.isAddingSection) return
+    console.log(card);
+    if (!this.userIsAuthor(card.creator.identityHash)) return;
     if (evt.target.hasAttribute('pin')) {
       this.cardBeingEdited = { id: card.id, parentSectionId: section.id }
     }

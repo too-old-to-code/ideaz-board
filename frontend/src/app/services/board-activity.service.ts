@@ -150,7 +150,7 @@ export class BoardActivityService {
   }
 
   saveCard (sectionId: any, changes: any, boardId: string) {
-    const { editing, __typename, ...fields } = changes;
+    const { editing, __typename, creator, ...fields } = changes;
     return this.apollo.mutate({
       mutation: UpdateCard,
       variables: {
@@ -166,6 +166,7 @@ export class BoardActivityService {
         updateCard: {
           __typename: 'Card',
           sectionId,
+          creator,
           ...fields
         }
       }

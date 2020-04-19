@@ -31,6 +31,10 @@ export const CardUpdated = gql`
     cardUpdated(boardId: $boardId){
       text
       author
+      creator {
+        name
+        identityHash
+      }
       id: _id
       sectionId
       likedBy

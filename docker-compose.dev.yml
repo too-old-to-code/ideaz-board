@@ -23,7 +23,7 @@ services:
     depends_on:
       - server
     volumes:
-      - /usr/app/node_modules
+      # - /usr/app/node_modules
       - ./frontend:/usr/app
   server:
     environment:

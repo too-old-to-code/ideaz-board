@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-
-const AuthorSchema = {
-  name: { type: String, trim: true },
-  id: { type: String }
-}
-
+const UserSchema = require('./user.schema');
 
 const CardSchema = new mongoose.Schema({
   id: mongoose.Schema.ObjectId,
@@ -12,6 +7,7 @@ const CardSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  creator: UserSchema,
   author: {
     type: String,
     trim: true
@@ -23,6 +19,10 @@ const CardSchema = new mongoose.Schema({
   likedBy: {
     type: [String],
     default: []
+  },
+  sectionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Section'
   }
 })
 

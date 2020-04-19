@@ -21,16 +21,20 @@ const server = new ApolloServer({
   resolvers,
   context: async (obj) => {
     let requestorId = null;
+    let requestor = null;
+    let tokenPayload;
     if (obj.req) {
       let { authorization } = obj.req.headers
       const token = authorization.replace('Bearer ', '');
 
       try {
-        const tokenPayload = await jwt.verify(token, JWT_SECRET)
+        tokenPayload = await jwt.verify(token, JWT_SECRET)
+        requestor = { identityHash: tokenPayload.id, name: tokenPayload.username }
         requestorId = tokenPayload.id
       } catch (e) { console.log(e)}
     }
     return {
+      requestor,
       requestorId,
       dataLoaders: {
         board: new DataLoader (async boardId => {

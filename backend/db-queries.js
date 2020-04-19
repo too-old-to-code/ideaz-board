@@ -39,18 +39,19 @@ module.exports.getBoardWithAllChildren = async (boardId, requestorId) => {
   // return [board]
 }
 
-module.exports.createBoard = async (board, sections, creatorId) => {
+module.exports.createBoard = async (board, sections, creator) => {
   const sectionsWithIds = await Section.insertMany(sections.map(section => ({ title: section })))
   board.sections = sectionsWithIds;
   if (board.accessPin) {
     const hash = await Board.createHash(board.accessPin);
     board = {...board, accessPinHash: hash}
   }
-  return Board.create({...board, creator: creatorId });
+  return Board.create({...board, creator });
 }
 
-module.exports.createCard = (card) => {
-  return Card.create(card);
+module.exports.createCard = (card, requestor) => {
+  console.log('===========>', requestor)
+  return Card.create({...card, creator: requestor});
 }
 
 module.exports.createSection = (section) => {
@@ -65,12 +66,12 @@ module.exports.updateSection = (sectionId, changes) => {
   )
 }
 
-module.exports.updateCard = (cardId, changes) => {
+module.exports.updateCard = async (card) => {
   return Card.findByIdAndUpdate(
-    cardId,
-    changes,
+    card.id,
+    card,
     { new: true }
-  )
+  ).lean()
 }
 
 module.exports.addSectionToBoard = (section, boardId) => {
@@ -80,9 +81,9 @@ module.exports.addSectionToBoard = (section, boardId) => {
   )
 }
 
-module.exports.addCardToSection = (card, sectionId) => {
+module.exports.addCardToSection = (card) => {
   return Section.updateOne(
-    { _id: sectionId },
+    { _id: card.sectionId },
     { $push: { cards: card }}
   )
 }

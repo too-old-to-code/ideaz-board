@@ -74,14 +74,15 @@ svg {
 .ib-card {
   outline: none;
 }
-/*.ib-card:focus #push-pin {
+
+.ib-card #push-pin.alt-color {
   filter:
-    saturate(240%)
-    hue-rotate(140deg)
-    brightness(95%)
-    contrast(80%)
+    saturate(100%)
+    hue-rotate(168deg)
+    brightness(84%)
+    contrast(125%)
     ;
-}*/
+}
 
 #push-pin.edit {
   transform: translateX(0px);

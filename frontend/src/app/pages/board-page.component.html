@@ -69,6 +69,7 @@
         *ngFor="let card of section.cards; trackBy: trackById"
         [backgroundColor]="getColorForSection(i)"
         [editing]="isEditing(card.id)"
+        [editable]="userIsAuthor(card.creator.identityHash)"
         [withPin]="true"
         (click)="saveCard($event, card, section)"
       >
