@@ -4,18 +4,6 @@ const Board = mongoose.model('Board');
 const Section = mongoose.model('Section');
 const Card = mongoose.model('Card');
 
-
-// module.exports.getBoardWithAllChildren = (boardId) => {
-//   return [Board.findOne(boardId)
-//     .populate({
-//       path: 'sections',
-//       populate: {
-//         path: 'cards',
-//         model: 'Card'
-//       }
-//     })]
-// }
-
 module.exports.getBoardWithAllChildren = async (boardId, requestorId) => {
   const board = await Board.findById(boardId)
     .populate({
@@ -26,17 +14,10 @@ module.exports.getBoardWithAllChildren = async (boardId, requestorId) => {
       }
     })
 
-  if (!board.accessPinHash || board.creator === requestorId || board.authorizedUsers.includes(requestorId)) {
+  if (!board.accessPinHash || board.creator.identityHash === requestorId || board.authorizedUsers.includes(requestorId)) {
     return [board]
   }
   throw new Error ('Auth error')
-  // if (board.accessPinHash) {
-  //   const pinSuccess = await Board.compareHash('1234', board.accessPinHash)
-  //   if (!pinSuccess) {
-  //     throw new Error('Auth error')
-  //   }
-  // }
-  // return [board]
 }
 
 module.exports.createBoard = async (board, sections, creator) => {
@@ -50,7 +31,7 @@ module.exports.createBoard = async (board, sections, creator) => {
 }
 
 module.exports.createCard = (card, requestor) => {
-  console.log('===========>', requestor)
+  console.log(card)
   return Card.create({...card, creator: requestor});
 }
 

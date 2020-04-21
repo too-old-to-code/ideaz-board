@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BoardActivityService } from '@services/board-activity.service';
 import { BrowserStorageService } from '@services/browser-storage.service';
-import {Apollo} from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { faCog, faLock } from '@fortawesome/free-solid-svg-icons';
+import { sectionNames } from '../defaults/section-names';
 
 @Component({
   selector: 'app-home-page',
@@ -15,47 +16,33 @@ export class HomePageComponent {
   public cogIcon = faCog;
   public lockIcon = faLock;
   public settingsActive = false;
-  public sectionNameIdeas = [
-    {text: 'What went well?', selected: false },
-    {text: 'What could be improved?', selected: false },
-    {text: 'Keep doing', selected: false },
-    {text: 'Start doing', selected: false },
-    {text: 'Stop doing', selected: false },
-    {text: 'Less of', selected: false },
-    {text: 'More of', selected: false },
-    {text: 'Action items', selected: false },
-    {text: 'Pros', selected: false },
-    {text: 'Cons', selected: false },
-    {text: 'Risks', selected: false },
-    {text: 'Opportunities', selected: false },
-    {text: 'Assumptions', selected: false },
-    {text: 'Thanks', selected: false }
+  public sectionNameIdeas = sectionNames.map(name => ({text: name, selected: false }));
 
-  ]
   constructor(
     private router: Router,
     private boardActivitySvc: BoardActivityService,
     private browserStorageSvc: BrowserStorageService
-
   ) {}
 
-  handleSelectSectionClick (sectionName) {
+  handleSelectSectionClick (sectionName): void {
     sectionName.selected = !sectionName.selected
   }
 
   handlePincodeEntry (pincode: string) {
     this.accessPin = pincode;
+    // close the settings panel once a pin is entered
     this.toggleSettingsPanel();
   }
 
-  toggleSettingsPanel () {
+  toggleSettingsPanel (): void {
     this.settingsActive = !this.settingsActive;
+    // reset the pin every time the settings panel is opened
+    if (this.settingsActive) this.accessPin = null;
   }
 
-  handleCreateBoardClick (boardTitle: string) {
+  handleCreateBoardClick (boardTitle: string): void {
     const selectedSections = this.sectionNameIdeas.filter(section => section.selected).map(section => section.text)
     this.boardActivitySvc.createBoard(
-      this.browserStorageSvc.user,
       selectedSections,
       boardTitle,
       this.accessPin

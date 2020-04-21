@@ -15,7 +15,6 @@ const findById = (id) => (item) => item.id === id;
 
 export const cacheUpdateCardSub = (prev: any, { subscriptionData }) => {
   const { sections } = prev.getBoard;
-  console.log(subscriptionData.data)
   const { cardUpdated } = subscriptionData.data;
   const sectionToBeUpdated = sections.find(section => section.id === cardUpdated.sectionId);
   const cardToUpdate = sectionToBeUpdated.cards.find(card => card.id === cardUpdated.id);

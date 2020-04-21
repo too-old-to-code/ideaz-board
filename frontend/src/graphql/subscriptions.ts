@@ -9,7 +9,6 @@ export const SectionAdded = gql`
       cards {
         text
         title
-        author
       }
     }
   }
@@ -19,7 +18,11 @@ export const CardAdded = gql`
   subscription CardAdded($boardId: String!) {
     cardAdded(boardId: $boardId){
       text
-      author
+      creator {
+        name
+        identityHash
+      }
+      createdAt
       id: _id
       sectionId
     }
@@ -30,11 +33,11 @@ export const CardUpdated = gql`
   subscription CardUpdated($boardId: String!) {
     cardUpdated(boardId: $boardId){
       text
-      author
       creator {
         name
         identityHash
       }
+      createdAt
       id: _id
       sectionId
       likedBy

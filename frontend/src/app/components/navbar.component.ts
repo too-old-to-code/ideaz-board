@@ -13,11 +13,6 @@ import { AccessState } from '@models';
         </div>
         <span class="routes">
           <div class="nav-item">
-            <span class="nav-link" (click)="changeView.emit()">
-              VIEW: {{viewStyle}}
-            </span>
-          </div>
-          <div class="nav-item">
             <span class="nav-link" (click)="addToClipboard.emit()">
               COPY URL
             </span>
@@ -27,7 +22,7 @@ import { AccessState } from '@models';
               EXPORT
             </span>
           </div>
-          <div class="nav-item">
+          <div class="nav-item" *ngIf="!restrictedSelection">
             <span class="nav-link" (click)="addSection.emit()">
               +SECTION
             </span>
@@ -47,6 +42,7 @@ export class NavbarComponent {
   @Input() boardTitle: string;
   @Input() viewStyle: string;
   @Input() accessState: AccessState;
+  @Input() restrictedSelection: boolean;
   @Output() addSection = new EventEmitter();
   @Output() exportAsPdf = new EventEmitter();
   @Output() addToClipboard = new EventEmitter();

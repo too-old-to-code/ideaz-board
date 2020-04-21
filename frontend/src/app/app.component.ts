@@ -10,7 +10,7 @@ import { User } from '@models';
 })
 export class AppComponent implements OnInit {
   title = 'ideaz-board';
-  user: User;
+  // user: User;
   token: string;
 
   constructor (
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit () {
-    this.user = this.browserStorageSvc.user;
+    // this.user = this.browserStorageSvc.user;
     this.token = this.browserStorageSvc.token;
   }
 
@@ -31,8 +31,8 @@ export class AppComponent implements OnInit {
         this.browserStorageSvc.token = result.data.getUserToken
       })
 
-    const user: User = { username, password };
-    this.browserStorageSvc.user = user;
-    this.user = user;
+    // const user: User = { username, password };
+    // this.browserStorageSvc.user = user;
+    // this.user = user;
   }
 }

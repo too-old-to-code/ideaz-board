@@ -29,7 +29,7 @@ export class IdeaCardComponent implements OnInit {
   private node: any;
   public chosenDimensions: [number, number, number, number];
   // angle: number;
-  @Input() text: string;
+  // @Input() text: string;
   @Input() backgroundColor: string;
   @Input() borderColor: string;
   @Input() color: string;
@@ -46,6 +46,7 @@ export class IdeaCardComponent implements OnInit {
   @ViewChild('svg', { static: true }) svg;
 
   ngOnInit() {
+    console.log('initited')
     // this.angle = Math.floor(Math.random() * 3) - 1;
     this.roughSvg = rough.svg(this.svg);
 

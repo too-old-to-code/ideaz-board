@@ -27,14 +27,14 @@ import { environment } from '../environments/environment';
     useFactory: (httpLink: HttpLink) => {
 
       const ws = new WebSocketLink({
-        uri: `ws://${environment.GRAPHQL_PATH}`,
+        uri: environment.GRAPHQL_WEBSOCKET_PATH,
         options: {
           reconnect: true
         }
       });
 
       const http = httpLink.create({
-        uri: `http://${environment.GRAPHQL_PATH}`
+        uri: environment.GRAPHQL_PATH
       });
 
       const authLink = setContext((_, { headers }) => {

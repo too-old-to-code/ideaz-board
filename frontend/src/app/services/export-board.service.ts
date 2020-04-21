@@ -22,7 +22,7 @@ export class ExportBoardService {
   }
 
   private addCardToRow(card: any) {
-    return [card.text, card.votes || 3, card.author]
+    return [card.text, card.likedBy.length || 0, card.author]
   }
 
   private createDocumentHeading (pageTitle: string) {
@@ -42,6 +42,7 @@ export class ExportBoardService {
     return {
       theme: TableThemes.Grid,
       headStyles:{ fillColor: headerColor, textColor: 'black' },
+      columnStyles: { 1: { halign: 'center'}},
       head: [[
         this.addColumn(section.title),
         this.addColumn('Votes', 15),
@@ -60,7 +61,13 @@ export class ExportBoardService {
 
     // Create a table for each of the sections of the board
     sections.forEach((section, index) =>
-      pdfDocument.autoTable(this.createTable(section, this.colorProviderSvc.colorAtIndex(index), pdfDocument))
+      pdfDocument.autoTable(
+        this.createTable(
+          section,
+          this.colorProviderSvc.colorAtIndex(index),
+          pdfDocument
+        )
+      )
     )
 
     // Save the pdf to the users computer

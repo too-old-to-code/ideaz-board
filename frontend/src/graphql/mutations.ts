@@ -5,9 +5,6 @@ export const CreateSection = gql`
     addSection(newSection: $newSection){
       id: _id
       title
-      cards {
-        id: _id
-      }
     }
   }
 `
@@ -18,11 +15,11 @@ export const UpdateCard = gql`
       id: _id
       sectionId
       text
+      createdAt
       creator {
         name
         identityHash
       }
-      author
     }
   }
 `
@@ -51,11 +48,11 @@ export const AddCard = gql`
   mutation AddCard($newCard: NewCardInput, $boardId: String!) {
     addCard(newCard: $newCard, boardId: $boardId) {
       id: _id
-      author
       creator {
         name
         identityHash
       }
+      createdAt
       text
       likedBy
       sectionId

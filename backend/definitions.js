@@ -18,11 +18,11 @@ const typeDefs = gql`
   type Card {
     _id: ID
     title: String
-    author: String
     creator: User
     text: String
     likedBy: [String]
     sectionId: ID
+    createdAt: String
   }
 
   type Section {
@@ -34,17 +34,13 @@ const typeDefs = gql`
   type Board {
     _id: ID
     title: String
-    password: String
     accessPin: String
-    username: String
     sections: [Section]
     creator: User
   }
 
   input NewBoardInput {
     title: String
-    password: String
-    username: String
     accessPin: String
   }
 
@@ -55,8 +51,8 @@ const typeDefs = gql`
 
   input NewCardInput {
     sectionId: ID
+    createdAt: String
     title: String
-    author: String
     text: String
   }
 
@@ -64,9 +60,9 @@ const typeDefs = gql`
     id: ID
     sectionId: ID
     title: String
-    author: String
     text: String
     likedBy: [String]
+    createdAt: String
   }
 
   input UpdateSectionInput {

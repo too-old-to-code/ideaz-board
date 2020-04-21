@@ -1,71 +1,68 @@
-// require('dotenv').config();
+// environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
-const DB_URL = process.env.DB_URL;
-// const JWT_SECRET = 'MY_SECRET';
-// const DB_URL = 'mongodb://ib-user:password@mongodb/ideazboard';
-const fs = require('fs');
-const { ApolloServer, gql } = require('apollo-server');
+const ENVIRONMENT = process.env.ENVIRONMENT;
+
+// apollo server components
+const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./definitions');
-const resolvers = require('./resolvers')
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+const resolvers = require('./resolvers');
+
+// improve get requests with caching and batching
 const DataLoader = require('dataloader')
+
+// database connection and queries
+const dbInit = require('./db');
 const dbQueries = require('./db-queries');
 
-const wordArt = fs.readFileSync('art.txt', 'utf8');
+// authentication
 const jwt = require('jsonwebtoken');
 
-const server = new ApolloServer({
-  typeDefs,
-  playground: false,
-  resolvers,
-  context: async (obj) => {
-    let requestorId = null;
-    let requestor = null;
-    let tokenPayload;
-    if (obj.req) {
-      let { authorization } = obj.req.headers
-      const token = authorization.replace('Bearer ', '');
+// extracted console messages
+const consoleMessage = require('./console-messages');
 
-      try {
-        tokenPayload = await jwt.verify(token, JWT_SECRET)
-        requestor = { identityHash: tokenPayload.id, name: tokenPayload.username }
-        requestorId = tokenPayload.id
-      } catch (e) { console.log(e)}
+// Use jwt in request header to authenticate the user
+const authenticateRequestor = (obj) => {
+  if (obj.req) {
+    let { authorization } = obj.req.headers
+    const token = authorization.replace('Bearer ', '');
+    try {
+      return jwt.verify(token, JWT_SECRET)
+    } catch (e) {
+      console.log(e)
+      return Promise.resolve(null);
     }
-    return {
-      requestor,
-      requestorId,
-      dataLoaders: {
-        board: new DataLoader (async boardId => {
-          return dbQueries.getBoardWithAllChildren([boardId], requestorId);
-        })
-      }
-    }
-  },
-  // dataSources: () => ({ db })
-});
-
-function clearConsole () {
-  console.log('\033[2J');
-  process.stdout.write("\u001b[3J\u001b[2J\u001b[1J");
-  console.clear();
+  }
 }
 
-console.log('Checking DB connection...')
-mongoose.connect(DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-})
-.then(() => {
-  // clearConsole();
+// Set up the apollo server with all its component pieces
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  playground: ENVIRONMENT === 'development',
+  context: async (obj) => {
+    const requestor = await authenticateRequestor(obj);
+    return {
+      requestor,
+      dataLoaders: {
+        board: new DataLoader (async boardId =>
+          dbQueries.getBoardWithAllChildren([boardId], requestor.identityHash)
+        )
+      }
+    }
+  }
+});
+
+consoleMessage.checkingDatabase();
+
+// connect to the database
+dbInit.then(() => {
+  consoleMessage.clearConsole();
+  // start the apollo server
   return server.listen()
 })
-.then(({url, ws}) => {
-  console.log(wordArt)
-  console.log(`Connected to DB`)
-  console.log(`🚀  Server ready at ${url}`)
+.then(({url}) => {
+  consoleMessage.wordArt();
+  consoleMessage.serverReady(url);
 })
 .catch((err) => console.log(err.message))
 

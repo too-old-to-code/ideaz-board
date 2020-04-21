@@ -8,14 +8,6 @@ const BoardSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  password: {
-    type: String,
-    trim: true
-  },
-  username: {
-    type: String,
-    trim: true
-  },
   sections: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Section'

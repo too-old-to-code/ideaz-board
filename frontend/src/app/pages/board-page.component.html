@@ -12,6 +12,7 @@
     (addToClipboard)="addToClipboard()"
     (changeView)="changeView()"
     (sendPin)="sendPin($event)"
+    [restrictedSelection]="!userIsAuthor(boardCreator?.identityHash)"
   ></app-navbar>
 </div>
 <div class="main-container">
@@ -57,6 +58,7 @@
           class="discrete bottom-left-corner"
         ></fa-icon>
         <fa-icon
+          *ngIf="userIsAuthor(boardCreator.identityHash)"
           (click)="deleteSection(section, $event)"
           [icon]="trashIcon"
           class="discrete bottom-right-corner"
@@ -69,7 +71,7 @@
         *ngFor="let card of section.cards; trackBy: trackById"
         [backgroundColor]="getColorForSection(i)"
         [editing]="isEditing(card.id)"
-        [editable]="userIsAuthor(card.creator.identityHash)"
+        [editable]="userIsAuthor(card.creator?.identityHash) || userIsAuthor(boardCreator.identityHash)"
         [withPin]="true"
         (click)="saveCard($event, card, section)"
       >
@@ -93,7 +95,7 @@
               [icon]="thumbsUp"
             ></fa-icon>{{card.likedBy?.length || 0}}
           </span>
-          <span class="discrete bottom-right-corner">- {{card.author}}</span>
+          <span class="discrete bottom-right-corner">- {{card.creator?.name}}</span>
         </ng-template>
       </app-idea-card>
       <!-- CARD DISPLAYED IN SECTIONS :ENDS: -->

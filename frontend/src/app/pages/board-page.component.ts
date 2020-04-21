@@ -32,8 +32,10 @@ export class BoardPageComponent implements OnInit, OnDestroy {
   private _cardBeingEdited: CardBeingEdited | null;
 
   public boardTitle: string;
+  public boardCreator: any;
   public isAddingSection = false;
   public sections$: Observable<any>;
+  public board$: Observable<any>;
   public view: View;
   public accessState = AccessState.Checking;
   // icons for use in template
@@ -69,8 +71,7 @@ export class BoardPageComponent implements OnInit, OnDestroy {
   ************************************************************************************/
 
   get username () {
-    const user = this.browserStorageSvc.user;
-    return user.username
+    return this.browserStorageSvc.username;
   }
 
   get userIdentityHash () {
@@ -148,8 +149,8 @@ export class BoardPageComponent implements OnInit, OnDestroy {
   getBoard () {
     return this.route.params.subscribe(params => {
       this.boardId = params && params.id
-      this.boardActivitySvc.getBoardTitle(this.boardId).subscribe((title: string) => this.boardTitle = title);
-      this.sections$ = this.boardActivitySvc.getBoard(this.boardId)
+
+      this.board$ = this.boardActivitySvc.getBoard(this.boardId)
         .pipe(
           catchError((err: any) => {
           if(err.graphQLErrors) {
@@ -160,9 +161,14 @@ export class BoardPageComponent implements OnInit, OnDestroy {
           }
           return throwError(err)
         }),
-        tap(() => this.accessState = AccessState.Permitted)
-
+        tap((board: any) => {
+          this.accessState = AccessState.Permitted
+          this.boardCreator = board.creator;
+          this.boardTitle = board.title
+        })
       )
+
+      this.sections$ = this.board$.pipe(pluck('sections'))
     });
   }
 
@@ -171,8 +177,7 @@ export class BoardPageComponent implements OnInit, OnDestroy {
       this.boardId,
       card.id,
       section.id
-    ).subscribe(a => console.log(a))
-    console.log(card)
+    ).subscribe()
   }
 
   sendPin (number: string) {
@@ -186,8 +191,11 @@ export class BoardPageComponent implements OnInit, OnDestroy {
 
   createCard (section) {
     if (this.isAddingSection) return
-    this.boardActivitySvc.createCard(section.id, this.username, this.boardId)
-      .subscribe((card: Card) => this.cardBeingEdited = { id: card.id, parentSectionId: section.id })
+    this.boardActivitySvc.createCard(section.id, this.boardId)
+      .subscribe((card: Card) => {
+        // don't need to return this.
+        this.cardBeingEdited = { id: card.id, parentSectionId: section.id }
+      })
   }
 
   changeAndSaveCard (event, card, section) {
@@ -201,9 +209,12 @@ export class BoardPageComponent implements OnInit, OnDestroy {
   }
 
   saveCard (evt, card, section) {
+    const userIsCardAuthorOrBoardCreator = () =>
+      this.userIsAuthor(this.boardCreator.identityHash) || this.userIsAuthor(card.creator.identityHash);
+
     if (this.isAddingSection) return
-    console.log(card);
-    if (!this.userIsAuthor(card.creator.identityHash)) return;
+    if (!userIsCardAuthorOrBoardCreator()) return;
+
     if (evt.target.hasAttribute('pin')) {
       this.cardBeingEdited = { id: card.id, parentSectionId: section.id }
     }

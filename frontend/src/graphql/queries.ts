@@ -15,7 +15,7 @@ export const GetBoard = gql`
           cards {
             id: _id
             text
-            author
+            createdAt
             creator {
               identityHash
               name

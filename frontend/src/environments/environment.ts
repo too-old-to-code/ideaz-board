@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  GRAPHQL_PATH: 'localhost:4000/graphql'
+  GRAPHQL_PATH: 'http://localhost:4000/graphql',
+  GRAPHQL_WEBSOCKET_PATH: 'ws://localhost:4000/graphql'
 };
 
 /*

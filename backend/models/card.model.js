@@ -8,10 +8,6 @@ const CardSchema = new mongoose.Schema({
     trim: true
   },
   creator: UserSchema,
-  author: {
-    type: String,
-    trim: true
-  },
   text: {
     type: String,
     trim: true
@@ -23,6 +19,10 @@ const CardSchema = new mongoose.Schema({
   sectionId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Section'
+  },
+  createdAt: {
+    type: String,
+    required: true
   }
 })
 

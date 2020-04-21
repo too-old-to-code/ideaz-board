@@ -96,7 +96,7 @@ export class BoardActivityService {
     })
 
     return board.valueChanges
-      .pipe(pluck('data','getBoard', 'sections'))
+      .pipe(pluck('data','getBoard'))
   }
 
   updateCardVotes (boardId, cardId, sectionId) {
@@ -107,11 +107,11 @@ export class BoardActivityService {
         cardId,
         sectionId
       },
-      update: cacheUpdateCardVotes({ boardId, sectionId }),
+      // update: cacheUpdateCardVotes({ boardId, sectionId }),
     })
   }
 
-  createBoard (user, sectionNames, boardTitle, accessPin) {
+  createBoard (sectionNames, boardTitle, accessPin) {
     const boardId = this.generateId ();
 
     return this.apollo.mutate({
@@ -120,8 +120,7 @@ export class BoardActivityService {
         sectionNames,
         newBoard: {
           title: boardTitle,
-          accessPin,
-          ...user
+          accessPin
         }
       }
     })
@@ -173,18 +172,30 @@ export class BoardActivityService {
     })
   }
 
-  createCard (sectionId: string, author: string, boardId: string) {
-    console.log(author)
+  createCard (sectionId: string, boardId: string) {
+    const createdAt = String(Date.now());
     return this.apollo.mutate({
       mutation: AddCard,
       variables: {
         newCard: {
-          author,
-          sectionId
+          sectionId,
+          createdAt
         },
         boardId
       },
-      update: cacheCreateCard({boardId, sectionId})
+      update: cacheCreateCard({boardId, sectionId}),
+      optimisticResponse: {
+        __typename: "Mutation",
+        addCard: {
+          __typename: "Card",
+          createdAt,
+          sectionId,
+          creator: null,
+          id: Math.round(Math.random() * -1000000),
+          text: '',
+          likedBy: []
+        }
+      }
     })
     .pipe(pluck('data','addCard'))
   }
